@@ -1,0 +1,7 @@
+
+2022/4/11 
+Load better pattern lock from open source github code.
+Update library import to newest version
+Add velocity tracker, print to the log for tracing purpose.
+Add function interface of using phone sensors.
+Guarantee to compile and not affect the existing functionality of the project
