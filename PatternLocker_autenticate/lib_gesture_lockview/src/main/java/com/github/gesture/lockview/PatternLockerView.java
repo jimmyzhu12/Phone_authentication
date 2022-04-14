@@ -3,6 +3,10 @@ package com.github.gesture.lockview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.opengl.GLSurfaceView;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -10,13 +14,21 @@ import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 
-
+// I decided to add the sensor class here
 public class PatternLockerView extends View {
+    private GLSurfaceView mGLSurfaceView;
+    private SensorManager mSensorManager;
+
 
     private VelocityTracker mVelocityTracker = null;
     /**
@@ -231,7 +243,23 @@ public class PatternLockerView extends View {
             }
         }
     }
+    // doubt if it works
+    private void writeToFile(String data,Context context) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("speedoutput.txt", Context.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
     // this is the part that controls main OnTouchEvent
+
+    // I decide to use sensor part only when the user is touching the screen
+    // e.g. trying to draw something
+    // thus, the main sensor control part will be added here
+    // Moreover, the recording strategy will be added here
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int index = event.getActionIndex();
@@ -259,7 +287,8 @@ public class PatternLockerView extends View {
                 mVelocityTracker.computeCurrentVelocity(1000);
                 Log.d("", "X velocity: " + mVelocityTracker.getXVelocity(pointerId));
                 Log.d("", "Y velocity: " + mVelocityTracker.getYVelocity(pointerId));
-
+                writeToFile("X velocity:" + mVelocityTracker.getXVelocity(pointerId), mContext);
+                writeToFile("Y velocity:" + mVelocityTracker.getYVelocity(pointerId), mContext);
                 this.handleActionMove(event);
                 isHandle = true;
                 break;

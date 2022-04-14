@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PatternLocker-main.iml" filepath="$PROJECT_DIR$/.idea/modules/PatternLocker-main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app_gesture/PatternLocker-main.app_gesture.iml" filepath="$PROJECT_DIR$/.idea/modules/app_gesture/PatternLocker-main.app_gesture.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib_gesture_lockview/PatternLocker-main.lib_gesture_lockview.iml" filepath="$PROJECT_DIR$/.idea/modules/lib_gesture_lockview/PatternLocker-main.lib_gesture_lockview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PatternLocker_autenticate.iml" filepath="$PROJECT_DIR$/.idea/modules/PatternLocker_autenticate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app_gesture/PatternLocker_autenticate.app_gesture.iml" filepath="$PROJECT_DIR$/.idea/modules/app_gesture/PatternLocker_autenticate.app_gesture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib_gesture_lockview/PatternLocker_autenticate.lib_gesture_lockview.iml" filepath="$PROJECT_DIR$/.idea/modules/lib_gesture_lockview/PatternLocker_autenticate.lib_gesture_lockview.iml" />
     </modules>
   </component>
 </project>

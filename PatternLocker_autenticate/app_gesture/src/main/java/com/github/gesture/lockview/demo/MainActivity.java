@@ -23,13 +23,12 @@
 package com.github.gesture.lockview.demo;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -41,51 +40,9 @@ import com.github.gesture.lockview.PatternIndicatorView;
 import com.github.gesture.lockview.PatternLockerView;
 
 public class MainActivity extends AppCompatActivity {
+    private SensorManager sensorManager;
+    private Sensor sensor;
 
-    // this is from android dev
-
-//    private static final String DEBUG_TAG = "Velocity";
-//
-//    private VelocityTracker mVelocityTracker = null;
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        int index = event.getActionIndex();
-//        int action = event.getActionMasked();
-//        int pointerId = event.getPointerId(index);
-//
-//        switch(action) {
-//            case MotionEvent.ACTION_DOWN:
-//                if(mVelocityTracker == null) {
-//                    // Retrieve a new VelocityTracker object to watch the
-//                    // velocity of a motion.
-//                    mVelocityTracker = VelocityTracker.obtain();
-//                }
-//                else {
-//                    // Reset the velocity tracker back to its initial state.
-//                    mVelocityTracker.clear();
-//                }
-//                // Add a user's movement to the tracker.
-//                mVelocityTracker.addMovement(event);
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                mVelocityTracker.addMovement(event);
-//                // When you want to determine the velocity, call
-//                // computeCurrentVelocity(). Then call getXVelocity()
-//                // and getYVelocity() to retrieve the velocity for each pointer ID.
-//                mVelocityTracker.computeCurrentVelocity(1000);
-//                // Log velocity of pixels per second
-//                // Best practice to use VelocityTrackerCompat where possible.
-//                Log.d("", "X velocity: " + mVelocityTracker.getXVelocity(pointerId));
-//                Log.d("", "Y velocity: " + mVelocityTracker.getYVelocity(pointerId));
-//                break;
-//            case MotionEvent.ACTION_UP:
-//            case MotionEvent.ACTION_CANCEL:
-//                // Return a VelocityTracker object back to be re-used by others.
-//                mVelocityTracker.recycle();
-//                break;
-//        }
-//        return true;
-//    }
     // this is the original lockview code
     private PatternLockerView patternLockerView;
     private PatternIndicatorView patternIndicatorView;
@@ -97,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
-
+        // initialize my sensor on create
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         ArrayList<Integer> integers = new ArrayList<>();
         integers.add(1);
         integers.add(2);
@@ -105,9 +63,23 @@ public class MainActivity extends AppCompatActivity {
         patternIndicatorView = (PatternIndicatorView) findViewById(R.id.patternIndicatorView);
         patternIndicatorView.updateState(integers, false);
 
+
         patternLockerView = (PatternLockerView) findViewById(R.id.patternLockerView);
 
         patternLockerView.setOnPatternChangedListener(new OnPatternChangeListener() {
+
+
+
+
+            public void onSensorChanged(SensorEvent event) {
+                // we received a sensor event. it is a good practice to check
+                // that we received the proper event
+                if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+
+                    Log.d("sensor", "sensor val" + event.values);
+                }
+            }
+
             @Override
             public void onStart(PatternLockerView view) {
 

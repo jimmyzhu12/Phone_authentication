@@ -51,24 +51,24 @@ public class TwoLineView extends View {
         drawMultiPath(canvas);
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        touchX = event.getX();
-//        touchY = event.getY();
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            Log.e("onTouchEvent", "创建pathNew");
-//            pathNew = new Path();
-//            pathNew.reset();
-//            pathNew.moveTo(touchX, touchY);
-//            multiPath.add(pathNew);
-//        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-//            if (Math.abs(touchX + touchY) > 20) {
-//                pathNew.lineTo(500, 500);
-//            }
-//        }
-//        invalidate();
-//        return true;
-//    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        touchX = event.getX();
+        touchY = event.getY();
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            Log.e("onTouchEvent", "创建pathNew");
+            pathNew = new Path();
+            pathNew.reset();
+            pathNew.moveTo(touchX, touchY);
+            multiPath.add(pathNew);
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            if (Math.abs(touchX + touchY) > 20) {
+                pathNew.lineTo(500, 500);
+            }
+        }
+        invalidate();
+        return true;
+    }
 
     private void drawMultiPath(Canvas canvas) {
         for (Path path : multiPath) {
