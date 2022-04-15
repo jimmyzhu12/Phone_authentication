@@ -5,3 +5,13 @@ Update library import to newest version
 Add velocity tracker, print to the log for tracing purpose.
 Add function interface of using phone sensors.
 Guarantee to compile and not affect the existing functionality of the project
+
+2022/4/15 weekly update
+Import sensor into the project, trying to display it on the screen
+
+Also aim to create a txt in the external storage of the emulator to record the values we fetched. (This week & Next week)
+
+By the end of the week, I should have:
+Sensor tentatively working (print value onto logcat) (Not necessarily displaying it on the device. 
+A shallow network to process the finger speed on the screen
+
