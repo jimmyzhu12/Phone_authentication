@@ -244,15 +244,29 @@ public class PatternLockerView extends View {
         }
     }
     // doubt if it works
-    private void writeToFile(String data,Context context) {
+    private long writeToSpeedFile(String data,Context context) {
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("speedoutput.txt", Context.MODE_PRIVATE));
+            Log.d("", "recording data to file speedoutput.txt");
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("speedoutput.txt", Context.MODE_APPEND));
             outputStreamWriter.write(data);
             outputStreamWriter.close();
+            File dir = context.getFilesDir();
+            File file = new File(dir, "speedoutput.txt");
+            return file.length();
         }
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
+            return 0;
         }
+    }
+
+    // this function clears the file
+    private void clearSpeedFile(Context context) {
+        File dir = context.getFilesDir();
+        File file = new File(dir, "speedoutput.txt");
+        file.delete();
+        writeToSpeedFile("X,Y velocity, X pos, Y pos \n", context);
+
     }
     // this is the part that controls main OnTouchEvent
 
@@ -285,10 +299,27 @@ public class PatternLockerView extends View {
             case MotionEvent.ACTION_MOVE:
                 mVelocityTracker.addMovement(event);
                 mVelocityTracker.computeCurrentVelocity(1000);
+                // get the current x and y position for training
+                float x_position = event.getX();
+                float y_position = event.getY();
                 Log.d("", "X velocity: " + mVelocityTracker.getXVelocity(pointerId));
                 Log.d("", "Y velocity: " + mVelocityTracker.getYVelocity(pointerId));
-                writeToFile("X velocity:" + mVelocityTracker.getXVelocity(pointerId), mContext);
-                writeToFile("Y velocity:" + mVelocityTracker.getYVelocity(pointerId), mContext);
+                Log.d("", "X,Y position when cal the velocity (" + x_position + ", " + y_position + ")");
+                String combined_data = "(" + mVelocityTracker.getXVelocity(pointerId) + ", " +  mVelocityTracker.getYVelocity(pointerId) + ", "
+                        + x_position + ", " + y_position + ")" + "\n";
+                File dir = mContext.getFilesDir();
+                File file = new File(dir, "speedoutput.txt");
+                long length = file.length();
+                if (length < 100000) {
+                    length = writeToSpeedFile(combined_data, mContext);
+                }
+                // this line may be commented out when going to real implementation
+
+                if (length >= 50000) {
+                    clearSpeedFile(mContext);
+                }
+
+
                 this.handleActionMove(event);
                 isHandle = true;
                 break;
